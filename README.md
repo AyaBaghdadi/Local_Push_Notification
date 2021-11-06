@@ -20,7 +20,48 @@
     
 //---------------------------------------------------------------------------------------------
 
-3. In App Delegate add method :
+3. Add Settings of Push Notification ->
+
+  |. Define gcmMessageIDKey : 
+
+        let gcmMessageIDKey = "gcm.message_id"
+    
+  ||. Add Delegate of UNUserNotificationCenterDelegate for handle message :
+
+        // [START ios_10_message_handling]
+        @available(iOS 10, *)
+        extension AppDelegate : UNUserNotificationCenterDelegate {
+
+            func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+
+                let userInfo = notification.request.content.userInfo
+
+                if let messageID = userInfo[gcmMessageIDKey] {
+                    print("Message ID: \(messageID)")
+                }
+
+                completionHandler([.alert,.badge, .sound])
+
+                print(userInfo)
+
+            }
+
+            func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                didReceive response: UNNotificationResponse,
+                                withCompletionHandler completionHandler: @escaping () -> Void) {
+                let userInfo = response.notification.request.content.userInfo
+
+                print(userInfo)
+
+                completionHandler()
+            }
+          }
+
+//---------------------------------------------------------------------------------------------
+
+4. In App Delegate add method :
 
        func applicationDidEnterBackground(_ application: UIApplication) {
            application.beginBackgroundTask {} // Allows to run background tasks
@@ -28,7 +69,7 @@
     
 //---------------------------------------------------------------------------------------------
 
-4. In App Delegate Inside method didFinishLaunchingWithOptions add :
+5. In App Delegate Inside method didFinishLaunchingWithOptions add :
 
        application.beginBackgroundTask(withName: "showNotification", expirationHandler: nil)
     
@@ -38,7 +79,7 @@
     
 //---------------------------------------------------------------------------------------------
     
-5. Call this method to take a permission for use push notification :
+6. Call this method to take a permission for use push notification :
 
        func TakeLocalNotificationPermisiion(){
           UNUserNotificationCenter.current().requestAuthorization(options: [.alert , .badge , .sound]) { (granted, error) in
@@ -48,11 +89,11 @@
 
              }
          }
-      }
+         }
     
 //---------------------------------------------------------------------------------------------
    
-6. You Can Test By The following lines :
+7. You Can Test By The following lines :
 
         let content = UNMutableNotificationContent()
         
