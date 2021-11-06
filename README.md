@@ -6,49 +6,49 @@
 
 1. In Project Target ( Signing & Capapilities ) Add Capapility :
 
-    1.Background Modes : Check -> [ Bachground fetch , Remote notifications , Background processing ]
+       1. Background Modes : Check -> [ Bachground fetch , Remote notifications , Background processing ]
     
-    2. Push Notification
+       2. Push Notification
     
 //---------------------------------------------------------------------------------------------
 
 2. In App Delegate Import : 
 
-    import UserNotifications
+       import UserNotifications
     
-    import BackgroundTasks
+       import BackgroundTasks
     
 //---------------------------------------------------------------------------------------------
 
 3. In App Delegate add method :
 
-    func applicationDidEnterBackground(_ application: UIApplication) {
-        application.beginBackgroundTask {} // Allows to run background tasks
-    }
+       func applicationDidEnterBackground(_ application: UIApplication) {
+           application.beginBackgroundTask {} // Allows to run background tasks
+       }
     
 //---------------------------------------------------------------------------------------------
 
 4. In App Delegate Inside method didFinishLaunchingWithOptions add :
 
-    application.beginBackgroundTask(withName: "showNotification", expirationHandler: nil)
+       application.beginBackgroundTask(withName: "showNotification", expirationHandler: nil)
     
-    let center = UNUserNotificationCenter.current()
+       let center = UNUserNotificationCenter.current()
     
-    center.delegate = self as! UNUserNotificationCenterDelegate
+       center.delegate = self as! UNUserNotificationCenterDelegate
     
 //---------------------------------------------------------------------------------------------
     
 5. Call this method to take a permission for use push notification :
 
-    func TakeLocalNotificationPermisiion(){
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert , .badge , .sound]) { (granted, error) in
-            if granted {
-                print("User gave permissions for local Notifications")
-            }else{
+       func TakeLocalNotificationPermisiion(){
+          UNUserNotificationCenter.current().requestAuthorization(options: [.alert , .badge , .sound]) { (granted, error) in
+             if granted {
+                 print("User gave permissions for local Notifications")
+             }else{ 
 
-            }
-        }
-    }
+             }
+         }
+     }
     
 //---------------------------------------------------------------------------------------------
    
